@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>仿酷狗音乐</title>
+    <meta name="viewport" maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <style>
+        *{
+            margin:0;
+            padding: 0;
+            list-style: none;
+            user-select:none;
+        }
+        .box{
+            width:100%;
+            height: 80vh;
+            background-color: #336699;
+            margin: 10vh 0;
+        }
+        .con{
+            width:60%;
+            height: 90%;
+            background-color: #97A0AA;
+            margin: 0 20%;
+            position: relative;
+        }
+        .con-left{
+            width: 50%;
+            height: 100%;
+            float: left;
+        }
+        .con-left img{
+            margin:5% 10%;
+        }
+        .download{
+            width: 60%;
+            height: 45px;
+            margin: 10% 20%;
+            border: 1.5px solid #fff;
+            border-radius: 45px;
+            text-align: center;
+            line-height: 45px;
+            color: #fff;
+        }
+        .con-right{
+            width: 50%;
+            height: 100%;
+            float: right;
+        }
+        .con-right p{
+            color: #fff;
+            font-size: 22px;
+            padding-left: 10%;
+            padding-top: 5%;
+        }
+        .con-right span{
+            display: block;
+            font-size: 16px;
+            color: #fff;
+            opacity: 0.6;
+            margin-left: 10%;
+            padding-top: 5%;
+        }
+        #lyric{
+            height: 70%;
+            width: 75%;
+            margin-left: 10%;
+            margin-top: 5%;
+            overflow: hidden;
+            overflow-y:scroll;
+        }
+        #lyric p{
+            color: #fff;
+            font-size: 16px;
+            opacity: 0.7;
+        }
+        #list{
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30%;
+            z-index: 9;
+        }
+        #list li{
+            height: 40px;
+            width: 90%;
+            line-height: 40px;
+            padding-left: 10%;
+            background-color: #1C2327;
+            opacity: 0.6;
+            border-bottom: 1px solid #fff;
+            color: #fff;
+            font-size: 18px;
+        }
+        #control{
+            width: 100%;
+            height: 10%;
+            background-color: #1C2327;
+            opacity: 0.5;
+            position: relative;
+        }
+        #buttonPlay{
+            position: absolute;
+            width:2.5%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+        }
+        #progressbg{
+            position: absolute;
+            top: 50%;
+            left: 25%;
+            width: 40%;
+            height: 5px;
+            background: #000;
+            border-radius: 5px;
+        }
+        #progress{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 5px;
+            background: blue;
+            border-radius: 5px;
+        }
+        #progressButton{
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 8px;
+            margin-top: -2.5px;
+            margin-left: 100%;
+        }
+        #time{
+            width: 5%;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            font-size: 16px;
+            color: #fff;
+            position: absolute;
+            top: 38%;
+            left: 67%;
+        }
+        #listButton{
+            position: absolute;
+            width:2.5%;
+            height: 60%;
+            top: 20%;
+            left: 74%;
+        }
+        @media screen and (max-width: 1024px) {
+            .con{
+                width:100%;
+                height: 90%;
+                background-color: #97A0AA;
+                margin: 0 0;
+            }
+            #lyric p{
+                color: #fff;
+                font-size: 20px;
+                opacity: 0.7;
+            }
+            #list{
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 35%;
+            }
+            #list li{
+                cursor: pointer;
+                height: 50px;
+                width: 90%;
+                line-height: 50px;
+                padding-left: 10%;
+                background-color: #1C2327;
+                opacity: 0.6;
+                border-bottom: 1px solid #fff;
+                color: #fff;
+                font-size: 20px;
+                z-index: 9;
+            }
+            #buttonPlay{
+                position: absolute;
+                width:8%;
+                height: 60%;
+                top: 20%;
+                left: 5%;
+            }
+            #progressbg{
+                position: absolute;
+                top: 49%;
+                left: 18%;
+                width: 40%;
+                height: 5px;
+                background: #000;
+                border-radius: 5px;
+                overflow: hidden;
+            }
+            #time{
+                width: 5%;
+                height: 18px;
+                line-height: 18px;
+                text-align: center;
+                font-size: 18px;
+                color: #fff;
+                position: absolute;
+                top: 41%;
+                left: 60%;
+            }
+            #listButton{
+                position: absolute;
+                width:8%;
+                height: 60%;
+                top: 20%;
+                right: 65%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="con">
+        <div class="con-left">
+            <img id ="photo" src="images/1.jpg" height="60%" width="80%"/>
+            <div class="download"><p>下载这首歌</p></div>
+        </div>
+        <div class="con-right">
+            <p id="song">歌名</p>
+            <span id="singer">歌手:</span>
+            <div id="lyric"></div>
+        </div>
+        <div id="list">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <div id="control">
+        <audio id ="audio" src="music/xw.mp3"></audio>
+        <div id="buttonPlay">
+            <img id="img" src="images/play.png" width="100%" height="100%" />
+        </div>
+        <div id="progressbg">
+            <div id="progress">
+                <div id="progressButton"></div>
+            </div>
+        </div>
+        <div id ="time">
+            0:00/0:00
+        </div>
+        <div id="listButton">
+            <img src="images/list.png" width="100%" height="100%" />
+        </div>
+    </div>
+</div>
+    <script>
+        var songData = [
+            {
+                song : '像我这样的人',
+                singer : '毛不易',
+                img : 'images/1.jpg',
+                src :'music/xw.mp3',
+                lyric:'[00:00.00] 作曲 : 毛不易[00:01.00] 作词 : 毛不易[00:09.340]编曲Arranger : 赵兆 宋涛[00:09.840][00:15.000]像我这样优秀的人[00:18.770]本该灿烂过一生[00:22.620]怎么二十多年到头来[00:26.700]还在人海里浮沉[00:30.240][00:30.350]像我这样聪明的人[00:34.500]早就告别了单纯[00:38.380]怎么还是用了一段情[00:42.360]去换一身伤痕[00:44.680][00:46.150]像我这样迷茫的人[00:49.840]像我这样寻找的人[00:53.800]像我这样碌碌无为的人[00:57.590]你还见过多少人[01:06.910][01:18.640]像我这样庸俗的人[01:22.830]从不喜欢装深沉[01:26.540]怎么偶尔听到老歌时[01:30.620]忽然也晃了神[01:34.380]像我这样懦弱的人[01:38.240]凡事都要留几分[01:42.200]怎么曾经也会为了谁[01:45.950]想过奋不顾身[01:47.680][01:49.870]像我这样迷茫的人[01:53.770]像我这样寻找的人[01:57.490]像我这样碌碌无为的人[02:01.450]你还见过多少人[02:04.690][02:05.460]像我这样孤单的人[02:09.200]像我这样傻的人[02:13.260]像我这样不甘平凡的人[02:16.990]世界上有多少人[02:20.080][02:26.760]像我这样迷茫的人[02:30.510]像我这样寻找的人[02:34.370]像我这样碌碌无为的人[02:38.230]你还见过多少人[02:40.340][02:42.000]像我这样孤单的人[02:46.100]像我这样傻的人[02:49.970]像我这样不甘平凡的人[02:53.650]世界上有多少人[02:56.630][02:59.630]像我这样莫名其妙的人[03:05.430]会不会有人心疼[03:09.550][03:13.900]制作人Producer : 李健 赵兆[03:14.760]口琴Harmonica : 刘晓光[03:15.820]键盘Keyboard : 赵兆[03:16.790]吉他Guitar : 薛峰[03:17.610]贝斯Bass : 韩阳[03:18.600]鼓Drum : 武勇恒[03:19.370]弦乐Strings : 国际首席爱乐乐团International Master Philharmonic Orchestra[03:20.230]混音Mixing : 周天澈[03:21.190]母带Mastering : Joe LaPorta .（Sterling Sound. NY）[03:21.880]录音棚Studio : 55TEC . Beijing[03:22.690]录音Recording : 李游 李杨[03:23.380]人声录音Vocal Recording : 李杨[03:24.100]人声编辑Vocal Editing : 李杨[03:24.670]录音助理Recording Assistants : 郭舒文 邢铜[03:25.260]音乐制作发行produced and distributed : 哇唧唧哇×智慧大狗[03:25.940]',
+            },
+            {
+                song : '淡出少年',
+                singer : '周品',
+                img : 'images/2.jpg',
+                src : 'music/dc.mp3',
+                lyric:"[by:我叫海洋像蓝天][00:00.000] 作曲 : 周品[00:01.000] 作词 : 周品[00:26.55]终究留不住时间[00:31.09]我要淡出了少年[00:34.09]幸好还来得及说一句 再见[00:41.76]那些人那些地点[00:45.53]触动我所有知觉[00:49.39]遗憾某些不能再续写[00:56.80]铭记每一个你出现每一个瞬间[01:04.36]或并肩向前 或渐行渐远[01:12.22]时光就在转瞬之间来到这一天[01:19.90]跟从前少年 挥手告别[01:27.61]曾骄傲宣言追逐梦想的我破茧成蝶[01:35.26]曾年少轻狂目空一切的我锋芒收敛[01:42.98]从不曾改变最初信念的我不怕艰险[01:50.57]依旧是那个翩翩的少年[02:07.43]终究留不住时间[02:10.79]我要淡出了少年[02:14.70]幸好还来得及说一句 再见[02:22.43]那些人那些地点[02:26.30]触动我所有知觉[02:30.12]遗憾某些不能再续写[02:37.41]铭记每一个你出现每一个瞬间[02:45.09]或并肩向前 或渐行渐远[02:52.80]时光就在转瞬之间来到这一天[03:00.49]跟从前少年 挥手告别[03:08.34]曾骄傲宣言追逐梦想的我破茧成蝶[03:15.96]曾年少轻狂目空一切的我锋芒收敛[03:23.65]从不曾改变最初信念的我不怕艰险[03:31.47]依旧是那个翩翩的少年[03:39.38]跟陪我笑过哭过的人说一声感谢[03:47.03]跟辜负曾经爱我的人说一句抱歉[03:54.72]就算我被这世界改变的更加洗练[04:02.48]我还是那个翩翩的少年[04:10.94]快要淡出了少年[04:14.80]对生活依然炽烈[04:18.72]最初那个梦尽在眼前[04:27.52]伸出双手拥抱全世界[04:36.21]"
+            },
+        ];
+        var audio = document.getElementById('audio');
+        var list = document.getElementById('list');
+        var ul = list.getElementsByTagName('ul')[0];
+        var li = list.getElementsByTagName('li');
+        var listButton = document.getElementById('listButton');
+        var singer = document.getElementById('singer');
+        var song = document.getElementById('song');
+        var photo = document.getElementById('photo');
+        var img = document.getElementById('img');
+        var time = document.getElementById('time');
+        var progressButton = document.getElementById('progressButton');
+        var progress = document.getElementById('progress');
+        //alert(progress.offsetParent.offsetLeft);
+            progressButton.onmousedown = function (ele) {
+                document.onmousemove = function (ele) {
+                    var juLi = ele.clientX - progress.offsetParent.offsetLeft;
+                    if (juLi < innerWidth * 0.4) {
+                        progress.style.width = juLi + 'px';
+                        audio.currentTime = parseInt(juLi / (innerWidth * 0.4) * audio.duration);
+                        console.log(parseInt(juLi / (innerWidth * 0.4) * audio.duration));
+                    }
+
+                };
+                document.onmouseup = function () {
+                    this.onmousedown = null;
+                    this.onmousemove = null;
+                }
+            };
+        var stop = 0;
+        /*封装进度条滚动 时间走动 以及暂停 播放结束时清楚定时器 以及更换成暂停图标 并更改state状态的方法*/
+        function move() {
+            if(state) {
+                var set = setInterval(function progressMove() {
+                    var progressTime = ((audio.currentTime / audio.duration) * 100).toFixed(2);
+                    if (stop===1){
+                        clearInterval(set);
+                    }
+                    if (audio.currentTime===audio.duration&&audio.currentTime!==0){
+                        clearInterval(set);
+                        img.src = "images/play.png";
+                        state = true
+                    }else{
+                        progress.style.width = progressTime + "0%";
+                    }
+                    if (audio.currentTime%60<10){
+                        time.innerHTML = parseInt(audio.duration/60)+":"+parseInt(audio.duration%60)+"/"+parseInt(audio.currentTime/60)+":"+"0"+parseInt(audio.currentTime%60);
+                    } else{
+                        time.innerHTML = parseInt(audio.duration/60)+":"+parseInt(audio.duration%60)+"/"+parseInt(audio.currentTime/60)+":"+parseInt(audio.currentTime%60);
+                    }
+                    //console.log(progress.style.width);
+                } , 1000);
+            }
+        }
+        /*获取js里保存的歌曲数目值 并动态创建li在获取到的ul里 */
+        var liContent = '';
+        for(var i = 0;i<songData.length;i++){
+            liContent +='<li>'+songData[i].song+'</li>';
+        }
+        ul.innerHTML = liContent;
+        /*将歌词的剪切方法 图片 歌名 歌手进行封装 在下边直接传进li的索引值直接调用 先传个参数0保证打开页面打开时即有歌词 图片 歌名 歌手*/
+        function lyricInput(n) {
+            photo.src = songData[n].img;
+            song.innerHTML = songData[n].song;
+            singer.innerHTML = "歌手：" + songData[n].singer;
+            audio.src = songData[n].src;
+            var str = '';
+            var lyric = document.getElementById('lyric');
+            var fLyric = songData[n].lyric.split('[');
+            fLyric.splice(0,1);
+            fLyric.forEach(
+                function (current) {
+                    var tLyric = current.split(']');
+                    //console.log(tLyric[0]);
+                  //var ee = tLyric[0].split('.')[0].split(':')[0]*60+tLyric[0].split('.')[0].split(':')[1];
+                    var fTime = tLyric[0].split('.')[0];
+                    var tTime = fTime.split(':');
+                    var  time = tTime[0]*60+parseInt(tTime[1]);
+                    console.log(time);
+                    var lyrics = tLyric[1];
+                    //console.log(lyrics);
+                    str += '<p id = "s'+time+'">' + lyrics + '</p>';
+                    lyric.innerHTML = str;
+                }
+            );
+        }
+        lyricInput(0);
+
+        /*这个函数控制着 图片 歌名 歌手歌词的动态更改 以及歌曲的播放（点击列表播放） 通过for循环获取到li点击时的索引值 用li[j].index = j;精髓在于this.index 然后将其值传入各位置 */
+        function sport() {
+            for (var j = 0; j < li.length; j++) {
+                li[j].index = j;
+                li[j].onclick = function () {
+                    lyricInput(this.index);
+                    state = true;
+                    onOff();
+                    img.src = "images/pause.png";
+                    state = false;
+                }
+            }
+        }
+        var index = 0;
+        audio.addEventListener("timeupdate", function () {
+           // console.log(parseInt(this.currentTime));
+            var cur = parseInt(this.currentTime);
+            if (document.getElementById('s'+cur)){
+                document.getElementById('s'+index).style.cssText = 'color:#fff';
+                index = cur;
+                document.getElementById('s'+cur).style.cssText = 'color:red';
+            }
+        },false);
+        sport();
+        /* 判断音乐的当前播放状态 然后实现播放/暂停*/
+        var state = true;
+        function onOff() {
+            if (state) {
+                audio.play();
+                img.src = "images/pause.png";
+                move();
+                stop = 0;
+                state = false;/*函数里不var且函数外有var 即可升为全局变量*/
+            } else {
+                audio.pause();
+                img.src = "images/play.png";
+                stop = 1;
+                state = true;
+            }
+        }
+        img.onclick = onOff;
+        /* 判断list的状态 实现列表的打开关闭*/
+        list.style.display = "none";
+        listButton.onclick = function chickList(){
+            if(list.style.display === "none"){
+                list.style.display = "block"
+            }else{
+                list.style.display = "none"
+            }
+        }
+    </script>
+</body>
+</html>
